@@ -1,15 +1,19 @@
 'use strict';
 
 var productsArray = [];
+var imageShownArray = []; 
 
 var firstImage = document.getElementById("img-one");
 var seconedImage = document.getElementById("img-two");
 var thiredImage = document.getElementById("img-three");
 var button = document.getElementById('button'); 
+var mychart = document.getElementById('categoryChart').getContext('2d');
+
+
 
 var productSection = document.getElementById("proudctsList");
 
-var tryNumb = 5;
+var tryNumb = 25;
 // var imageShown = 0;
 
 
@@ -57,19 +61,40 @@ function renderpics(ImageOne, imageTwo, imageThree) {
 
 
 
+function checkAvailability (selectedImageName) {
+
+    for (var index = 0; index < imageShownArray.length; index++) {
+      if (imageShownArray[index].name === selectedImageName) {
+        return true;
+      }
+    }
+    return false;  
+  }
 
 
 function assignApic() {
 
-    var ImageOne = Math.round(Math.random() * (productsArray.length - 1));
+    do{
+        var ImageOne = Math.round(Math.random() * (productsArray.length - 1));
+    var imageOneName = productsArray[ImageOne].name;
+    }while(checkAvailability (imageOneName))
+    
 
     do {
         var imageTwo = Math.round(Math.random() * (productsArray.length - 1));
+        var imageTwoName = productsArray[imageTwo].name;
         var imageThree = Math.round(Math.random() * (productsArray.length - 1));
-    } while (ImageOne === imageTwo || ImageOne === imageThree || imageTwo === imageThree);
+        var imageThreeName = productsArray[imageThree].name;
+    } while (ImageOne === imageTwo || ImageOne === imageThree || imageTwo === imageThree || checkAvailability (imageTwoName)||checkAvailability (imageThreeName));
 
 
+    imageShownArray= [];
 
+    imageShownArray.push(
+        productsArray[ImageOne],
+        productsArray[imageTwo],
+        productsArray[imageThree]
+    )
     //   console.log(ImageOne);
     //   console.log(imageTwo);
     //   console.log(imafeThree);
@@ -170,7 +195,7 @@ var resultlist = document.getElementById('resultList');
 
 function list(event){
     event.preventDefault();  
-
+    renderChart();
     var ulList = document.createElement('ul'); 
     resultlist.appendChild(ulList); 
 
@@ -184,6 +209,143 @@ function list(event){
 
 }
 
+
+
+
+
+
+
+function renderChart() {
+
+    var arrayOfNames = [];
+    var arrayOfCount = [];
+    var arrayOfShown = [];
+  
+  
+    for (var index = 0; index < productsArray.length; index++) {
+        arrayOfNames.push(productsArray[index].name);
+      arrayOfCount.push(productsArray[index].count);
+      arrayOfShown.push(productsArray[index].imageShown);
+      
+    }
+   
+    var categoriesChart = new Chart(mychart, {
+      type: 'bar',
+      data: {
+        labels: arrayOfNames, // array of labels (names of the goats)
+        datasets: [
+          {
+          label: '# of Product Clicks',
+          data: arrayOfCount, // array of values (count for each goat when it was clicked)
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)'
+           
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)'
+          ],
+          borderWidth: 1
+        },
+        {
+          label: 'Times shown for the Product',
+          data: arrayOfShown, // array of values (count for each goat when it was clicked)
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  }
+  
 
 
 
