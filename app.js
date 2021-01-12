@@ -8,16 +8,11 @@ var seconedImage = document.getElementById("img-two");
 var thiredImage = document.getElementById("img-three");
 var button = document.getElementById('button'); 
 var mychart = document.getElementById('categoryChart').getContext('2d');
-
-
+var clearButton = document.getElementById('Clear');
 
 var productSection = document.getElementById("proudctsList");
 
-var tryNumb = 25;
-// var imageShown = 0;
-
-
-
+var tryNumb = 5;
 
 function Products(name, image) {
 
@@ -26,19 +21,21 @@ function Products(name, image) {
     this.url = 'img/' + image;
     this.imageShown = 0;
     this.count = 0;
-
-
-
     productsArray.push(this);
+
+    // myLocalStorage(); 
+
 
 }
 
 
 
+// maybe i'm calling the function in the wrong place 
+// i'm calling the wrong function 
+// the count is not pushing to the products array 
+// it dosen't take the changes 
 
-
-
-
+console.log(productsArray); 
 
 function renderpics(ImageOne, imageTwo, imageThree) {
 
@@ -48,18 +45,7 @@ function renderpics(ImageOne, imageTwo, imageThree) {
     productsArray[imageTwo].imageShown++;
     thiredImage.setAttribute('src', productsArray[imageThree].url);
     productsArray[imageThree].imageShown++;
-
-
-
-
-
-
 }
-
-
-
-
-
 
 function checkAvailability (selectedImageName) {
 
@@ -70,13 +56,11 @@ function checkAvailability (selectedImageName) {
     }
     return false;  
   }
-
-
 function assignApic() {
 
     do{
         var ImageOne = Math.round(Math.random() * (productsArray.length - 1));
-    var imageOneName = productsArray[ImageOne].name;
+        var imageOneName = productsArray[ImageOne].name;
     }while(checkAvailability (imageOneName))
     
 
@@ -94,41 +78,29 @@ function assignApic() {
         productsArray[ImageOne],
         productsArray[imageTwo],
         productsArray[imageThree]
-    )
+    );
     //   console.log(ImageOne);
     //   console.log(imageTwo);
     //   console.log(imafeThree);
 
     renderpics(ImageOne, imageTwo, imageThree);
-
-
-
-
-
 }
-
-
-
 function checkProduct(indicator) {
 
+  console.log(productsArray); 
     for (var i = 0; i < productsArray.length; i++) {
 
         if (productsArray[i].url === indicator) {
             productsArray[i].count++;
             tryNumb--;
-
         }
-
-
-
     }
-
 }
 
 
 function countProducts(event) {
     var targetByid = event.target.id;
-    console.log(targetByid);
+    // console.log(targetByid);
 
     if (tryNumb !== 0) {
         if (targetByid === 'img-one' || targetByid === 'img-two' || targetByid === 'img-three') {
@@ -141,7 +113,8 @@ function countProducts(event) {
         }
     } else {
         productSection.removeEventListener('click', countProducts);
-        console.log(productsArray);
+        myLocalStorage();
+        // console.log(productsArray);
     }
 
 
@@ -175,6 +148,7 @@ new Products('usb', 'usb.gif');
 new Products('water-can', 'water-can.jpg');
 new Products('wine-glass', 'wine-glass.jpg');
 
+console.log(productsArray); 
 
 
 assignApic();
@@ -192,10 +166,54 @@ var resultlist = document.getElementById('resultList');
 
 
 
+function myLocalStorage() {
+  localStorage.setItem('myData', JSON.stringify(productsArray));
+}
+
+
+function clearStorage(){
+
+  localStorage.clear();
+
+}
+
+function restoreData () {
+    
+  if (localStorage.length > 0 ) { 
+     productsArray = JSON.parse(localStorage.getItem('myData'));
+
+    //  checkProduct(); 
+  console.log(productsArray); 
+   
+  }
+}
+
+
+
+// console.log(localStorage); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function list(event){
     event.preventDefault();  
     renderChart();
+
+    // myLocalStorage(); 
+
+  
+
     var ulList = document.createElement('ul'); 
     resultlist.appendChild(ulList); 
 
@@ -353,3 +371,6 @@ function renderChart() {
 
 
 button.addEventListener('click', list); 
+clearButton.addEventListener('click', clearStorage); 
+restoreData(); 
+console.log(localStorage); 
